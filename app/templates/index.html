@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+
+    {% for storages in storage %}
+            <div>
+                <p> FILE: {{ storages.name }} --- AUTHOR:<b>{{ storages.author.username }}</b>
+                    <form method="get" action="/uploads/{{ storages.name }}">
+                        <input type=submit value=Download>
+                    </form>
+                </p>
+            </div>
+    {% endfor %}
+{% endblock %}
