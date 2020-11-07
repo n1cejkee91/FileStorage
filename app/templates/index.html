@@ -4,13 +4,15 @@
     <h1>Hi, {{ current_user.username }}!</h1>
 
     {% for storages in storage %}
+        {% if storages.publish_name %}
             <ul>
-                <p> FILE: {{ storages.name }} --- AUTHOR:<b>{{ storages.author.username }}</b>
-                    <form method="get" action="/uploads/{{ storages.name }}">
-                        <input type=submit value=Download>
-                    </form>
+                <p> FILE: {{ storages.publish_name }} --- AUTHOR:<b>{{ storages.author.username }}</b>
+                <form method="get" action="/uploads/{{ storages.publish_name }}">
+                <input type=submit value=Download>
+            </form>
                 </p>
             </ul>
             <hr>
+        {% endif %}
     {% endfor %}
 {% endblock %}

@@ -118,12 +118,31 @@ def download(filename):
     return send_from_directory(directory=uploads, filename=filename)
 
 
+@app.route('/user/posting/<filename>', methods=['GET', 'POST'])
+@login_required
+def publish(filename):
+    if request.method == "POST":
+        storage = Storage(publish_name=filename, author=current_user)
+        db.session.add(storage)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('user.html', user=user, filename=filename)
+
+
 @app.route('/delete/<filename>', methods=['GET', 'POST'])
 @login_required
 def remove(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     os.remove(path)
-    obj = Storage.query.filter_by(name=filename).first_or_404()
-    db.session.delete(obj)
+    storage = Storage.query.filter_by(name=filename).first_or_404()
+    db.session.delete(storage)
     db.session.commit()
+    if Storage.query.filter_by(publish_name=filename):
+        storage = Storage.query.filter_by(publish_name=filename).first_or_404()
+        db.session.delete(storage)
+        db.session.commit()
+        return redirect(url_for('index'))
     return redirect(url_for('index'))
+
+
+

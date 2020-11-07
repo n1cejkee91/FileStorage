@@ -37,6 +37,7 @@ def load_user(id):
 class Storage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(64))
+    publish_name = db.Column(db.Unicode(64))
     path = db.Column(db.Unicode(128))
     type = db.Column(db.Unicode(3))
     create_date = db.Column(db.DateTime, default=datetime.now)
